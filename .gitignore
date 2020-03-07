@@ -10,5 +10,8 @@ npm-debug.*
 web-build/
 web-report/
 
+# react-native-dotenv
+.env
+
 # macOS
 .DS_Store

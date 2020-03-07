@@ -45,7 +45,32 @@ module.exports = {
     '@typescript-eslint/explicit-member-accessibility': 'off',
     indent: 'off',
     '@typescript-eslint/indent': 'off',
+    '@typescript-eslint/interface-name-prefix': [
+      'error',
+      {
+        'prefixWithI': 'always'
+      }
+    ],
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+    '@typescript-eslint/member-delimiter-style': [
+      'error',
+      {
+        multiline: {
+          delimiter: 'none',
+          requireLast: false
+        },
+        singleline: {
+          delimiter: 'comma',
+          requireLast: false
+        }
+      }
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '^_'
+      }
+    ],
 
     // prefer-arrow
     'prefer-arrow/prefer-arrow-functions': [

@@ -9,14 +9,34 @@
     "lintfix": "eslint --fix --ext ./ 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "^0.1.6",
+    "axios": "^0.19.2",
+    "camelcase-keys": "^6.1.2",
     "expo": "~36.0.0",
+    "expo-font": "^8.0.0",
+    "lodash": "^4.17.15",
+    "native-base": "^2.13.8",
+    "qs": "^6.9.1",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
-    "react-native-screens": "2.0.0-alpha.12"
+    "react-native-gesture-handler": "^1.5.3",
+    "react-native-reanimated": "^1.7.0",
+    "react-native-safe-area-context": "^0.6.2",
+    "react-native-screens": "^2.0.0-alpha.32",
+    "react-native-vector-icons": "^6.6.0",
+    "react-native-webview": "^8.0.6",
+    "react-navigation": "^4.1.0",
+    "react-navigation-drawer": "^2.3.3",
+    "react-navigation-stack": "^2.0.16",
+    "snakecase-keys": "^3.1.2",
+    "unstated-next": "^1.1.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@types/lodash": "^4.14.149",
+    "@types/qs": "^6.9.1",
     "@types/react": "~16.9.0",
     "@types/react-native": "~0.60.23",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
@@ -30,7 +50,9 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "metro-react-native-babel-preset": "^0.58.0",
     "prettier": "^1.19.1",
+    "react-native-dotenv": "^0.2.0",
     "typescript": "~3.6.3"
   },
   "private": true
