@@ -15,12 +15,12 @@ import {
 import { WebView, WebViewNavigation } from 'react-native-webview'
 import AuthContainer from '../containers/auth-container'
 
-type Props = {
+type ContentProps = {
   navigation: ReturnType<typeof useNavigation>
   authContainer: ReturnType<typeof AuthContainer.useContainer>
 }
 
-type State = {
+type ContentState = {
   codeUri: string
   canGoBack: boolean
   canGoForward: boolean
@@ -28,11 +28,11 @@ type State = {
   url: string
 }
 
-class SignInScreenContent extends Component<Props, State> {
+class SignInScreenContent extends Component<ContentProps, ContentState> {
   private webViewRef = createRef<WebView>()
   private backHandler: NativeEventSubscription
 
-  constructor(props: Props) {
+  constructor(props: ContentProps) {
     super(props)
 
     this.state = {
@@ -117,7 +117,7 @@ class SignInScreenContent extends Component<Props, State> {
   }
 }
 
-const SignInScreen: React.FC<Props> = () => {
+const SignInScreen: React.FC = () => {
   const navigation = useNavigation()
   navigation.dispatch
   const authContainer = AuthContainer.useContainer()

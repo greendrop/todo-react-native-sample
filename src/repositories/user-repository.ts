@@ -8,7 +8,7 @@ const repository = Repository
 export { repository as Repository }
 
 export default {
-  getMe: (): Promise<AxiosResponse<IUser>> => // repository.defaults.headers.TaskRepository
+  getMe: (): Promise<AxiosResponse<IUser>> =>
     repository.get(OAUTH2_USERINFO_URL),
 
   setHeaderAuthorization(value) {
