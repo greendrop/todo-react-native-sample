@@ -1,16 +1,18 @@
 import React from 'react'
-import { createAppContainer } from 'react-navigation'
-import { createDrawerNavigator } from 'react-navigation-drawer'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import DrawerContentComponent from '../components/organisms/DrawerContentComponent'
-import SignInNavigator from './SignInNavigator'
+import SignInScreen from '../screens/SignInScreen'
 
-const AppNavigator = createDrawerNavigator(
-  {
-    SignIn: { screen: SignInNavigator }
-  },
-  {
-    contentComponent: props => <DrawerContentComponent {...props} />
-  }
-)
+const Drawer = createDrawerNavigator()
 
-export default createAppContainer(AppNavigator)
+const AppNavigator: React.FC = () => {
+  return (
+    <Drawer.Navigator
+      drawerContent={props => <DrawerContentComponent {...props} />}
+    >
+      <Drawer.Screen name="SignIn" component={SignInScreen} />
+    </Drawer.Navigator>
+  )
+}
+
+export default AppNavigator

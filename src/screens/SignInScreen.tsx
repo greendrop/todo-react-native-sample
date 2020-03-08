@@ -1,11 +1,6 @@
 import React, { Component, createRef } from 'react'
 import { BackHandler, NativeEventSubscription } from 'react-native'
-import {
-  NavigationParams,
-  NavigationScreenProp,
-  NavigationState
-} from 'react-navigation'
-import { DrawerActions } from 'react-navigation-drawer'
+import { useNavigation, DrawerActions } from '@react-navigation/native'
 import {
   Container,
   Header,
@@ -20,12 +15,12 @@ import {
 import { WebView, WebViewNavigation } from 'react-native-webview'
 import AuthContainer from '../containers/auth-container'
 
-type ContentProps = {
-  navigation: NavigationScreenProp<NavigationState, NavigationParams>
+type Props = {
+  navigation: ReturnType<typeof useNavigation>
   authContainer: ReturnType<typeof AuthContainer.useContainer>
 }
 
-type ContentState = {
+type State = {
   codeUri: string
   canGoBack: boolean
   canGoForward: boolean
@@ -33,11 +28,11 @@ type ContentState = {
   url: string
 }
 
-class SignInScreenContent extends Component<ContentProps, ContentState> {
+class SignInScreenContent extends Component<Props, State> {
   private webViewRef = createRef<WebView>()
   private backHandler: NativeEventSubscription
 
-  constructor(props: ContentProps) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -122,16 +117,14 @@ class SignInScreenContent extends Component<ContentProps, ContentState> {
   }
 }
 
-type Props = {
-  navigation: NavigationScreenProp<NavigationState, NavigationParams>
-}
-
-const SignInScreen: React.FC<Props> = props => {
+const SignInScreen: React.FC<Props> = () => {
+  const navigation = useNavigation()
+  navigation.dispatch
   const authContainer = AuthContainer.useContainer()
 
   return (
     <SignInScreenContent
-      navigation={props.navigation}
+      navigation={navigation}
       authContainer={authContainer}
     />
   )

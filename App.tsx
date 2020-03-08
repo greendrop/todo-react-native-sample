@@ -2,11 +2,9 @@ import React from 'react'
 import { AppLoading } from 'expo'
 import * as Font from 'expo-font'
 import { Ionicons } from '@expo/vector-icons'
-import { createAppContainer } from 'react-navigation'
+import { NavigationContainer } from '@react-navigation/native'
 import AppNavigator from './src/navigators/AppNavigator'
 import AuthContainer from './src/containers/auth-container'
-
-const AppContainer = createAppContainer(AppNavigator)
 
 interface IProps {}
 
@@ -38,7 +36,9 @@ class App extends React.Component<IProps, IState> {
 
     return (
       <AuthContainer.Provider>
-        <AppContainer />
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
       </AuthContainer.Provider>
     )
   }
