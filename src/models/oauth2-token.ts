@@ -5,6 +5,13 @@ export interface IOAuth2Token {
   expiresAt: Date | null
 }
 
+export interface IApiOAuth2Token {
+  accessToken: string
+  refreshToken: string
+  createdAt: number
+  expiresIn: number
+}
+
 export class OAuth2Token implements IOAuth2Token {
   accessToken = ''
   refreshToken = ''

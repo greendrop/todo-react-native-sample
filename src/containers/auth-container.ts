@@ -23,6 +23,8 @@ const initialUser: IUser = {
 const useAuth = () => {
   const [token, setToken] = useState<IOAuth2Token>(initialToken)
   const [user, setUser] = useState<IUser>(initialUser)
+  const [isFetching, setIsFetching] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false)
   const [errorStatus, setErrorStatus] = useState<number | null>(null)
   const [errorData, setErrorData] = useState<string | null>(null)
 
@@ -42,20 +44,47 @@ const useAuth = () => {
     setToken(initialToken)
   }
 
-  const getAccessTokenFromCode = async (code: string) => {
-    await OAuth2Client.getAccessTokenFromCode(code)
-      .then(response => {
+  const fetchTokenAndUserByCode = async (code: string) => {
+    setIsFetching(true)
+    setIsError(false)
+    setErrorStatus(null)
+    setErrorData(null)
+    await OAuth2Client.getAccessTokenByCode(code)
+      .then(async response => {
         const data = response.data
-        setToken({
+        const fetchedToken = {
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
           createdAt: new Date(data.createdAt * 1000),
           expiresAt: new Date((data.createdAt + data.expiresIn) * 1000)
-        })
+        }
+        UserRepository.setHeaderAuthorization(
+          `Bearer ${fetchedToken.accessToken}`
+        )
+        await UserRepository.getMe()
+          .then(response => {
+            const data = response.data
+            setToken(fetchedToken)
+            setUser({
+              id: data.id,
+              email: data.email,
+              createdAt: new Date(data.createdAt),
+              updatedAt: new Date(data.updatedAt)
+            })
+          })
+          .catch((error: AxiosError) => {
+            setIsError(true)
+            setErrorStatus(error.response.status)
+            setErrorData(error.response.data)
+          })
       })
       .catch((error: AxiosError) => {
+        setIsError(true)
         setErrorStatus(error.response.status)
         setErrorData(error.response.data)
+      })
+      .finally(() => {
+        setIsFetching(false)
       })
   }
 
@@ -67,7 +96,11 @@ const useAuth = () => {
     )
   }
 
-  const getUser = async () => {
+  const fetchUser = async () => {
+    setIsFetching(true)
+    setIsError(false)
+    setErrorStatus(null)
+    setErrorData(null)
     UserRepository.setHeaderAuthorization(`Bearer ${token.accessToken}`)
     await UserRepository.getMe()
       .then(response => {
@@ -80,8 +113,12 @@ const useAuth = () => {
         })
       })
       .catch((error: AxiosError) => {
+        setIsError(true)
         setErrorStatus(error.response.status)
         setErrorData(error.response.data)
+      })
+      .finally(() => {
+        setIsFetching(false)
       })
   }
 
@@ -103,6 +140,10 @@ const useAuth = () => {
     setToken,
     user,
     setUser,
+    isFetching,
+    setIsFetching,
+    isError,
+    setIsError,
     errorStatus,
     setErrorStatus,
     errorData,
@@ -111,9 +152,9 @@ const useAuth = () => {
     isRedirectUrlWithCode,
     getCodeFromUrl,
     clearToken,
-    getAccessTokenFromCode,
+    fetchTokenAndUserByCode,
     isValidToken,
-    getUser,
+    fetchUser,
     clearUser,
     isSignedIn,
     signOut

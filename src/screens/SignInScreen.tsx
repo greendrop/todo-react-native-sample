@@ -1,6 +1,14 @@
-import React, { Component, createRef } from 'react'
-import { BackHandler, NativeEventSubscription } from 'react-native'
-import { useNavigation, DrawerActions } from '@react-navigation/native'
+import React, { FC, useState, useEffect, useRef } from 'react'
+import {
+  BackHandler,
+  NativeEventSubscription,
+  NativeModules
+} from 'react-native'
+import {
+  useNavigation,
+  useIsFocused,
+  DrawerActions
+} from '@react-navigation/native'
 import {
   Container,
   Header,
@@ -12,121 +20,89 @@ import {
   Right,
   Content
 } from 'native-base'
-import { WebView, WebViewNavigation } from 'react-native-webview'
+import { WebView } from 'react-native-webview'
 import AuthContainer from '../containers/auth-container'
 
-type ContentProps = {
-  navigation: ReturnType<typeof useNavigation>
-  authContainer: ReturnType<typeof AuthContainer.useContainer>
-}
+let backHandler: NativeEventSubscription | null = null
 
-type ContentState = {
-  codeUri: string
-  canGoBack: boolean
-  canGoForward: boolean
-  loading: boolean
-  url: string
-}
+const SignInScreen: FC = () => {
+  const navigation = useNavigation()
+  const authContainer = AuthContainer.useContainer()
+  const [initialUrl, setInitialUrl] = useState<string>('')
+  const [url, setUrl] = useState<string>('')
+  const [canGoBack, setCanGoBack] = useState<boolean>(false)
+  const webViewRef = useRef<WebView>(null)
+  const isFocused = useIsFocused()
 
-class SignInScreenContent extends Component<ContentProps, ContentState> {
-  private webViewRef = createRef<WebView>()
-  private backHandler: NativeEventSubscription
+  useEffect(() => {
+    if (isFocused) {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      NativeModules.Networking.clearCookies(() => {})
+      setInitialUrl(`${authContainer.getAuthorizationUrl()}&t=${Date.now()}`)
+      if (backHandler) {
+        backHandler.remove()
+        backHandler = null
+      }
+      backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        if (webViewRef.current && canGoBack) {
+          webViewRef.current.goBack()
 
-  constructor(props: ContentProps) {
-    super(props)
+          return true
+        }
 
-    this.state = {
-      codeUri: this.props.authContainer.getAuthorizationUrl(),
-      canGoBack: false,
-      canGoForward: false,
-      loading: false,
-      url: ''
-    }
-  }
-
-  componentDidMount() {
-    this.backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      this.handleBackPress
-    )
-  }
-
-  componentWillUnmount() {
-    this.backHandler.remove()
-  }
-
-  handleBackPress = () => {
-    if (this.webViewRef.current && this.state.canGoBack) {
-      this.webViewRef.current.goBack()
-
-      return true
-    }
-
-    return false
-  }
-
-  render() {
-    return (
-      <Container>
-        <Header>
-          <Left>
-            <Button
-              transparent
-              onPress={() => {
-                this.props.navigation.dispatch(DrawerActions.openDrawer())
-              }}
-            >
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Sign in</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content contentContainerStyle={{ flex: 1 }}>
-          <WebView
-            ref={this.webViewRef}
-            source={{ uri: this.state.codeUri }}
-            style={{ flex: 1 }}
-            onNavigationStateChange={this.onNavigationStateChange.bind(this)}
-          />
-        </Content>
-      </Container>
-    )
-  }
-
-  async onNavigationStateChange(event: WebViewNavigation) {
-    const beforeUrl = this.state.url
-    this.setState({
-      canGoBack: event.canGoBack,
-      canGoForward: event.canGoForward,
-      loading: event.loading,
-      url: event.url
-    })
-    if (
-      beforeUrl !== event.url &&
-      this.props.authContainer.isRedirectUrlWithCode(event.url)
-    ) {
-      const code = this.props.authContainer.getCodeFromUrl(event.url)
-      await this.props.authContainer.getAccessTokenFromCode(code).then()
-      if (this.props.authContainer.isValidToken()) {
-        await this.props.authContainer.getUser()
+        return false
+      })
+    } else {
+      if (backHandler) {
+        backHandler.remove()
+        backHandler = null
       }
     }
-  }
-}
+  }, [isFocused, canGoBack])
 
-const SignInScreen: React.FC = () => {
-  const navigation = useNavigation()
-  navigation.dispatch
-  const authContainer = AuthContainer.useContainer()
+  useEffect(() => {
+    if (authContainer.isRedirectUrlWithCode(url)) {
+      const code = authContainer.getCodeFromUrl(url)
+      authContainer.fetchTokenAndUserByCode(code)
+    }
+  }, [url])
+
+  useEffect(() => {
+    if (authContainer.isSignedIn()) {
+      navigation.dispatch(DrawerActions.jumpTo('Tasks'))
+    }
+  }, [authContainer.isSignedIn()])
 
   return (
-    <SignInScreenContent
-      navigation={navigation}
-      authContainer={authContainer}
-    />
+    <Container>
+      <Header>
+        <Left>
+          <Button
+            transparent
+            onPress={() => {
+              navigation.dispatch(DrawerActions.openDrawer())
+            }}
+          >
+            <Icon name="menu" />
+          </Button>
+        </Left>
+        <Body>
+          <Title>Sign in</Title>
+        </Body>
+        <Right />
+      </Header>
+      <Content contentContainerStyle={{ flex: 1 }}>
+        <WebView
+          ref={webViewRef}
+          source={{ uri: initialUrl }}
+          style={{ flex: 1 }}
+          onNavigationStateChange={async event => {
+            setCanGoBack(event.canGoBack)
+            setUrl(event.url)
+          }}
+        />
+      </Content>
+    </Container>
   )
 }
 

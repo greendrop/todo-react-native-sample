@@ -14,6 +14,7 @@ import axios, {
   AxiosTransformer,
   AxiosResponse
 } from 'axios'
+import { IApiOAuth2Token } from '../models/oauth2-token'
 
 const snakeParams = (config: AxiosRequestConfig): AxiosRequestConfig => {
   if (config.params) {
@@ -68,13 +69,6 @@ const axiosInstance = axios.create({
 })
 axiosInstance.interceptors.request.use(snakeParams)
 
-interface IOAuth2Token {
-  accessToken: string
-  refreshToken: string
-  createdAt: number
-  expiresIn: number
-}
-
 export default {
   getAuthorizationUrl: (): string => {
     const params = {
@@ -108,9 +102,9 @@ export default {
     return parse.query.code
   },
 
-  getAccessTokenFromCode: (
+  getAccessTokenByCode: (
     code: string
-  ): Promise<AxiosResponse<IOAuth2Token>> => {
+  ): Promise<AxiosResponse<IApiOAuth2Token>> => {
     const params = {
       grantType: 'authorization_code',
       code: code,
