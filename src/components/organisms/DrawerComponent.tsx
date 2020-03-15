@@ -1,41 +1,61 @@
-import React, { Component } from 'react'
+import React, { FC } from 'react'
+import { DrawerActions } from '@react-navigation/native'
 import {
   DrawerContentComponentProps,
   DrawerContentOptions
 } from '@react-navigation/drawer'
 import { Container, Text, List, ListItem } from 'native-base'
+import AuthContainer from '../../containers/auth-container'
 
-const routes = ['SignIn']
+const menus = [{ name: 'Tasks', title: 'Tasks' }]
 
 type Props = DrawerContentComponentProps<DrawerContentOptions>
 
-class DrawerComponentContent extends Component<Props> {
-  render() {
-    return (
-      <Container>
-        <List
-          dataArray={routes}
-          keyExtractor={data => data}
-          renderRow={data => {
-            return (
-              <ListItem
-                button
-                onPress={() => this.props.navigation.navigate(data)}
-              >
-                <Text>{data}</Text>
-              </ListItem>
-            )
-          }}
-        />
-      </Container>
-    )
-  }
-}
+const DrawerComponent: FC<Props> = props => {
+  const authContainer = AuthContainer.useContainer()
 
-const DrawerComponent: React.FC<DrawerContentComponentProps<
-  DrawerContentOptions
->> = props => {
-  return <DrawerComponentContent {...props} />
+  return (
+    <Container>
+      <List>
+        {menus.map(menu => {
+          return (
+            <ListItem
+              key={menu.name}
+              button
+              onPress={() =>
+                props.navigation.dispatch(DrawerActions.jumpTo(menu.name))
+              }
+            >
+              <Text>{menu.title}</Text>
+            </ListItem>
+          )
+        })}
+        {!authContainer.isSignedIn() && (
+          <ListItem
+            key="SignIn"
+            button
+            onPress={() =>
+              props.navigation.dispatch(DrawerActions.jumpTo('SignIn'))
+            }
+          >
+            <Text>Sign in</Text>
+          </ListItem>
+        )}
+        {authContainer.isSignedIn() && (
+          <ListItem
+            key="SignOut"
+            button
+            onPress={() => {
+              authContainer.signOut()
+              props.navigation.dispatch(DrawerActions.jumpTo('SignIn'))
+            }}
+          >
+            <Text>Sign out</Text>
+          </ListItem>
+        )}
+      </List>
+    </Container>
+  )
 }
 
 export default DrawerComponent
