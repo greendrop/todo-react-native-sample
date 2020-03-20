@@ -51,6 +51,9 @@ const useTaskList = () => {
         setIsError(true)
         setErrorStatus(error.response.status)
         setErrorData(error.response.data)
+        if (error.response.status === 401) {
+          authContainer.setIsUnauthorized(true)
+        }
       })
       .finally(() => {
         setIsFetching(false)
@@ -81,6 +84,9 @@ const useTaskList = () => {
         setIsError(true)
         setErrorStatus(error.response.status)
         setErrorData(error.response.data)
+        if (error.response.status === 401) {
+          authContainer.setIsUnauthorized(true)
+        }
       })
       .finally(() => {
         setIsFetching(false)

@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import AuthContainer from './containers/auth-container'
-import AppComponent from './AppContent'
+import AppContent from './AppContent'
 
 const App: FC = () => {
   return (
     <AuthContainer.Provider>
-      <AppComponent />
+      <AppContent />
     </AuthContainer.Provider>
   )
 }
