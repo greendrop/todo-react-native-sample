@@ -114,5 +114,18 @@ export default {
     }
 
     return axiosInstance.post(OAUTH2_ACCESS_TOKEN_URL, params)
+  },
+
+  getAccessTokenByRefreshToken: (
+    refreshToken: string
+  ): Promise<AxiosResponse<IApiOAuth2Token>> => {
+    const params = {
+      grantType: 'refresh_token',
+      refreshToken: refreshToken,
+      clientId: OAUTH2_CLIENT_ID,
+      clientSecret: OAUTH2_CLIENT_SECRET
+    }
+
+    return axiosInstance.post(OAUTH2_ACCESS_TOKEN_URL, params)
   }
 }

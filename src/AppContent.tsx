@@ -9,7 +9,10 @@ import storage from './lib/storage'
 import { IOAuth2Token } from './models/oauth2-token'
 import { IUser } from './models/user'
 
-const AppComponent: FC = () => {
+const AppContent: FC = () => {
+  const [isLoadedFont, setIsLoadedFont] = useState<boolean>(false)
+  const [isLoadedStorage, setIsLoadedStorage] = useState<boolean>(false)
+  const [isFetchedToken, setIsFetchedToken] = useState<boolean>(false)
   const [isReady, setIsReady] = useState<boolean>(false)
   const authContainer = AuthContainer.useContainer()
 
@@ -21,7 +24,13 @@ const AppComponent: FC = () => {
         Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
         ...Ionicons.font
       })
+      setIsLoadedStorage(true)
+    }
+    f()
+  }, [])
 
+  useEffect(() => {
+    const f = async () => {
       await storage
         .load({
           key: 'authContainer.token'
@@ -52,10 +61,49 @@ const AppComponent: FC = () => {
         })
         .catch(_err => {}) // eslint-disable-line @typescript-eslint/no-empty-function
 
-      setIsReady(true)
+      setIsLoadedFont(true)
     }
     f()
   }, [])
+
+  useEffect(() => {
+    if (isLoadedStorage) {
+      const f = async () => {
+        if (authContainer.token.refreshToken !== '') {
+          await authContainer.fetchTokenByRefreshToken(
+            authContainer.token.refreshToken
+          )
+        }
+        setIsFetchedToken(true)
+      }
+      f()
+    }
+  }, [isLoadedStorage])
+
+  useEffect(() => {
+    if (isLoadedFont && isLoadedStorage && isFetchedToken) {
+      setIsReady(true)
+    }
+  }, [isLoadedFont, isLoadedStorage, isFetchedToken])
+
+  useEffect(() => {
+    if (isReady && authContainer.isNeedRefresh()) {
+      const f = async () => {
+        if (authContainer.token.refreshToken !== '') {
+          await authContainer.fetchTokenByRefreshToken(
+            authContainer.token.refreshToken
+          )
+        }
+      }
+      f()
+    }
+  }, [authContainer.isNeedRefresh()])
+
+  useEffect(() => {
+    if (isReady && authContainer.isUnauthorized) {
+      authContainer.signOut()
+    }
+  }, [authContainer.isUnauthorized])
 
   useEffect(() => {
     if (isReady) {
@@ -90,4 +138,4 @@ const AppComponent: FC = () => {
   )
 }
 
-export default AppComponent
+export default AppContent

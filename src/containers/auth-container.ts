@@ -24,9 +24,11 @@ const useAuth = () => {
   const [token, setToken] = useState<IOAuth2Token>(initialToken)
   const [user, setUser] = useState<IUser>(initialUser)
   const [isFetching, setIsFetching] = useState<boolean>(false)
+  const [isUnauthorized, setIsUnauthorized] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
   const [errorStatus, setErrorStatus] = useState<number | null>(null)
   const [errorData, setErrorData] = useState<string | null>(null)
+  const [isRefreshFetching, setIsRefreshFetching] = useState<boolean>(false)
 
   const getAuthorizationUrl = (): string => {
     return OAuth2Client.getAuthorizationUrl()
@@ -76,6 +78,9 @@ const useAuth = () => {
             setIsError(true)
             setErrorStatus(error.response.status)
             setErrorData(error.response.data)
+            if (error.response.status === 401) {
+              setIsUnauthorized(true)
+            }
           })
       })
       .catch((error: AxiosError) => {
@@ -96,8 +101,41 @@ const useAuth = () => {
     )
   }
 
+  const fetchTokenByRefreshToken = async (refreshToken: string) => {
+    if (isRefreshFetching) {
+      return
+    }
+    setIsRefreshFetching(true)
+    setIsError(false)
+    setErrorStatus(null)
+    setErrorData(null)
+    await OAuth2Client.getAccessTokenByRefreshToken(refreshToken)
+      .then(async response => {
+        const data = response.data
+        const fetchedToken = {
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          createdAt: new Date(data.createdAt * 1000),
+          expiresAt: new Date((data.createdAt + data.expiresIn) * 1000)
+        }
+        setToken(fetchedToken)
+      })
+      .catch((error: AxiosError) => {
+        setIsError(true)
+        setErrorStatus(error.response.status)
+        setErrorData(error.response.data)
+        if (error.response.status === 401) {
+          setIsUnauthorized(true)
+        }
+      })
+      .finally(() => {
+        setIsRefreshFetching(false)
+      })
+  }
+
   const fetchUser = async () => {
     setIsFetching(true)
+    setIsUnauthorized(false)
     setIsError(false)
     setErrorStatus(null)
     setErrorData(null)
@@ -116,6 +154,9 @@ const useAuth = () => {
         setIsError(true)
         setErrorStatus(error.response.status)
         setErrorData(error.response.data)
+        if (error.response.status === 401) {
+          setIsUnauthorized(true)
+        }
       })
       .finally(() => {
         setIsFetching(false)
@@ -133,6 +174,18 @@ const useAuth = () => {
   const signOut = () => {
     clearToken()
     clearUser()
+    setIsUnauthorized(false)
+  }
+
+  const isNeedRefresh = () => {
+    if (!token.expiresAt) {
+      return false
+    }
+
+    const date = new Date(token.expiresAt.getTime())
+    date.setHours(date.getHours() - 1)
+
+    return date <= new Date() ? true : false
   }
 
   return {
@@ -142,6 +195,8 @@ const useAuth = () => {
     setUser,
     isFetching,
     setIsFetching,
+    isUnauthorized,
+    setIsUnauthorized,
     isError,
     setIsError,
     errorStatus,
@@ -154,10 +209,12 @@ const useAuth = () => {
     clearToken,
     fetchTokenAndUserByCode,
     isValidToken,
+    fetchTokenByRefreshToken,
     fetchUser,
     clearUser,
     isSignedIn,
-    signOut
+    signOut,
+    isNeedRefresh
   }
 }
 
