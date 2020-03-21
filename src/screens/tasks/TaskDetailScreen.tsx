@@ -6,11 +6,11 @@ import {
 } from '@react-navigation/native'
 import { Container } from 'native-base'
 import AuthContainer from '../../containers/auth-container'
-import TaskListContainer from '../../containers/task-list-container'
-import TaskListHeaderComponent from '../../components/organisms/TaskListHeaderComponent'
-import TaskListBodyComponent from '../../components/organisms/TaskListBodyComponent'
+import TaskDetailContainer from '../../containers/task-detail-container'
+import TaskDetailHeaderComponent from '../../components/organisms/TaskDetailHeaderComponent'
+import TaskDetailBodyComponent from '../../components/organisms/TaskDetailBodyComponent'
 
-const TaskListScreen: FC = () => {
+const TaskDetailScreen: FC = () => {
   const navigation = useNavigation()
   const authContainer = AuthContainer.useContainer()
   const isFocused = useIsFocused()
@@ -22,13 +22,13 @@ const TaskListScreen: FC = () => {
   }, [authContainer.isSignedIn()])
 
   return (
-    <TaskListContainer.Provider>
+    <TaskDetailContainer.Provider>
       <Container>
-        <TaskListHeaderComponent />
-        <TaskListBodyComponent />
+        <TaskDetailHeaderComponent />
+        <TaskDetailBodyComponent />
       </Container>
-    </TaskListContainer.Provider>
+    </TaskDetailContainer.Provider>
   )
 }
 
-export default TaskListScreen
+export default TaskDetailScreen

@@ -18,6 +18,7 @@ const TaskListBodyComponent: FC = () => {
 
   return (
     <Content
+      padder
       contentContainerStyle={{ flex: 1 }}
       refreshControl={
         <RefreshControl
