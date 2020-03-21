@@ -128,7 +128,6 @@ const AppContent: FC = () => {
   return (
     <>
       {!isReady && <AppLoading />}
-
       {isReady && (
         <NavigationContainer>
           <AppNavigator />
