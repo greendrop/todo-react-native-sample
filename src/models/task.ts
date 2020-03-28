@@ -16,6 +16,12 @@ export interface IApiTask {
   updatedAt: string | null
 }
 
+export interface ITaskForm {
+  title: string
+  description: string | null
+  done: boolean
+}
+
 export const convertApiTaskToTask = (apiTask: IApiTask): ITask => {
   return {
     id: apiTask.id,
@@ -24,5 +30,13 @@ export const convertApiTaskToTask = (apiTask: IApiTask): ITask => {
     done: apiTask.done,
     createdAt: apiTask.createdAt ? new Date(apiTask.createdAt) : null,
     updatedAt: apiTask.updatedAt ? new Date(apiTask.updatedAt) : null
+  }
+}
+
+export const convertTaskToTaskForm = (task: ITask): ITaskForm => {
+  return {
+    title: task.title,
+    description: task.description,
+    done: task.done
   }
 }
