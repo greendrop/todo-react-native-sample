@@ -83,7 +83,7 @@ const SignInScreen: FC = () => {
               navigation.dispatch(DrawerActions.openDrawer())
             }}
           >
-            <Icon name="menu" />
+            <Icon type="FontAwesome5" name="bars" />
           </Button>
         </Left>
         <Body>

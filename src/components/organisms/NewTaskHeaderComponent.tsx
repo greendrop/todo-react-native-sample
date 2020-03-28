@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Header, Title, Left, Button, Icon, Body, Right } from 'native-base'
 
-const TaskDetailHeaderComponent: FC = () => {
+const NewTaskHeaderComponent: FC = () => {
   const navigation = useNavigation()
 
   return (
@@ -13,11 +13,11 @@ const TaskDetailHeaderComponent: FC = () => {
         </Button>
       </Left>
       <Body>
-        <Title>Task detail</Title>
+        <Title>New task</Title>
       </Body>
       <Right />
     </Header>
   )
 }
 
-export default TaskDetailHeaderComponent
+export default NewTaskHeaderComponent

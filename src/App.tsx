@@ -1,12 +1,15 @@
 import React, { FC } from 'react'
+import { Root } from 'native-base'
 import AuthContainer from './containers/auth-container'
 import AppContent from './AppContent'
 
 const App: FC = () => {
   return (
-    <AuthContainer.Provider>
-      <AppContent />
-    </AuthContainer.Provider>
+    <Root>
+      <AuthContainer.Provider>
+        <AppContent />
+      </AuthContainer.Provider>
+    </Root>
   )
 }
 

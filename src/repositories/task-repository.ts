@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 import { API_BASE_URL } from 'react-native-dotenv'
 import Repository from './repository'
-import { IApiTask } from '../models/task'
+import { IApiTask, ITaskForm } from '../models/task'
 
 const baseUrl = `${API_BASE_URL}/v1/tasks`
 
@@ -24,5 +24,23 @@ export default {
     const url = `${baseUrl}/${id}`
 
     return repository.get(url)
+  },
+
+  create(taskForm: ITaskForm): Promise<AxiosResponse<IApiTask>> {
+    const url = baseUrl
+
+    return Repository.post(url, { task: taskForm })
+  },
+
+  update(id: number, taskForm: ITaskForm): Promise<AxiosResponse<IApiTask>> {
+    const url = `${baseUrl}/${id}`
+
+    return Repository.put(url, { task: taskForm })
+  },
+
+  delete(id: number): Promise<AxiosResponse<IApiTask>> {
+    const url = `${baseUrl}/${id}`
+
+    return Repository.delete(url)
   }
 }
