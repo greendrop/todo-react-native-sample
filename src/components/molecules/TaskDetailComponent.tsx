@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
-import { Card, CardItem, Body, H2, Text } from 'native-base'
+import { Form, Item, Label, Input, Switch } from 'native-base'
 import { ITask } from '../../models/task'
+import { datetime } from '../../lib/filters'
 
 type Props = {
   task: ITask
@@ -8,21 +9,31 @@ type Props = {
 
 const TaskDetailComponent: FC<Props> = props => {
   return (
-    <Card>
-      <CardItem header>
-        <H2>{props.task.title}</H2>
-      </CardItem>
-      <CardItem>
-        <Body>
-          <Text>{props.task.description}</Text>
-        </Body>
-      </CardItem>
-      <CardItem>
-        <Body>
-          <Text>{props.task.done}</Text>
-        </Body>
-      </CardItem>
-    </Card>
+    <Form>
+      <Item stackedLabel>
+        <Label>Title</Label>
+        <Input editable={false} value={props.task.title} />
+      </Item>
+      <Item stackedLabel>
+        <Label>Description</Label>
+        <Input editable={false} multiline value={props.task.description} />
+      </Item>
+      <Item stackedLabel>
+        <Label>Done</Label>
+        <Switch
+          style={{ alignSelf: 'flex-start', paddingTop: 20, paddingLeft: 10 }}
+          value={props.task.done}
+        />
+      </Item>
+      <Item stackedLabel>
+        <Label>Created at</Label>
+        <Input editable={false} value={datetime(props.task.createdAt)} />
+      </Item>
+      <Item stackedLabel>
+        <Label>Updated at</Label>
+        <Input editable={false} value={datetime(props.task.updatedAt)} />
+      </Item>
+    </Form>
   )
 }
 

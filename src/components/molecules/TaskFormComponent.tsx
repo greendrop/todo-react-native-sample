@@ -32,14 +32,14 @@ const TaskFormComponent: FC = () => {
           onChange={taskFormContainer.handleDescription}
         />
       </Item>
-      <BorderlessItem stackedLabel>
+      <Item stackedLabel>
         <Label>Done</Label>
         <Switch
-          style={{ alignSelf: 'flex-start', paddingTop: 20 }}
+          style={{ alignSelf: 'flex-start', paddingTop: 20, paddingLeft: 10 }}
           value={taskFormContainer.taskForm.done}
           onValueChange={taskFormContainer.handleDone}
         />
-      </BorderlessItem>
+      </Item>
     </Form>
   )
 }
