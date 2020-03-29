@@ -7,6 +7,7 @@ import {
 import { Container } from 'native-base'
 import AuthContainer from '../../containers/auth-container'
 import TaskDetailContainer from '../../containers/task-detail-container'
+import TaskDeleteContainer from '../../containers/task-delete-container'
 import TaskDetailHeaderComponent from '../../components/organisms/TaskDetailHeaderComponent'
 import TaskDetailBodyComponent from '../../components/organisms/TaskDetailBodyComponent'
 
@@ -23,10 +24,12 @@ const TaskDetailScreen: FC = () => {
 
   return (
     <TaskDetailContainer.Provider>
-      <Container>
-        <TaskDetailHeaderComponent />
-        <TaskDetailBodyComponent />
-      </Container>
+      <TaskDeleteContainer.Provider>
+        <Container>
+          <TaskDetailHeaderComponent />
+          <TaskDetailBodyComponent />
+        </Container>
+      </TaskDeleteContainer.Provider>
     </TaskDetailContainer.Provider>
   )
 }
