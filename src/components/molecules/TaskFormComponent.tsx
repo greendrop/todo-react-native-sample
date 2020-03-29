@@ -35,7 +35,7 @@ const TaskFormComponent: FC = () => {
       <Item stackedLabel>
         <Label>Done</Label>
         <Switch
-          style={{ alignSelf: 'flex-start', paddingTop: 20, paddingLeft: 10 }}
+          style={{ alignSelf: 'flex-start', marginTop: 5, marginLeft: 5 }}
           value={taskFormContainer.taskForm.done}
           onValueChange={taskFormContainer.handleDone}
         />
