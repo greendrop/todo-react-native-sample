@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Form, Item, Label, Input, Switch } from 'native-base'
+import { Form, Item, Label, Input, Textarea, Switch } from 'native-base'
 import { ITask } from '../../models/task'
 import { datetime } from '../../lib/filters'
 
@@ -16,12 +16,24 @@ const TaskDetailComponent: FC<Props> = props => {
       </Item>
       <Item stackedLabel>
         <Label>Description</Label>
-        <Input editable={false} multiline value={props.task.description} />
+        <Textarea
+          rowSpan={
+            props.task.description
+              ? props.task.description.split('\n').length
+              : 1
+          }
+          bordered={false}
+          underline={false}
+          editable={false}
+          style={{ alignSelf: 'stretch', marginLeft: -10, marginTop: 10 }}
+          value={props.task.description}
+        />
       </Item>
       <Item stackedLabel>
         <Label>Done</Label>
         <Switch
-          style={{ alignSelf: 'flex-start', paddingTop: 20, paddingLeft: 10 }}
+          disabled
+          style={{ alignSelf: 'flex-start', marginTop: 5, marginLeft: 5 }}
           value={props.task.done}
         />
       </Item>
