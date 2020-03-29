@@ -8,7 +8,7 @@ import AuthContainer from './auth-container'
 const initialTasks: Array<ITask> = []
 const initialTotalCount = 0
 const initialPage = 1
-const initialPerPage = 10
+const initialPerPage = 50
 const initialMaxPage = 1
 
 const useTaskList = () => {
@@ -35,7 +35,7 @@ const useTaskList = () => {
     setIsFetching(true)
     setIsError(false)
     const params = {
-      page: page,
+      page: initialPage,
       perPage: perPage
     }
     TaskRepository.setHeaderAuthorization(
@@ -44,8 +44,11 @@ const useTaskList = () => {
     await TaskRepository.getList(params)
       .then(response => {
         setTasks(response.data.map(data => convertApiTaskToTask(data)))
-        setTotalCount(Number(response.headers.totalCount))
-        setMaxPage(totalCount === 0 ? 1 : Math.ceil(page / perPage))
+        const headerTotalCount = Number(response.headers.totalCount)
+        setTotalCount(headerTotalCount)
+        setMaxPage(
+          headerTotalCount === 0 ? 1 : Math.ceil(headerTotalCount / perPage)
+        )
       })
       .catch((error: AxiosError) => {
         setIsError(true)
@@ -77,8 +80,11 @@ const useTaskList = () => {
         )
         setTasks(tasks.concat(additionalTasks))
         setPage(page + 1)
-        setTotalCount(Number(response.headers.totalCount))
-        setMaxPage(totalCount === 0 ? 1 : Math.ceil(page / perPage))
+        const headerTotalCount = Number(response.headers.totalCount)
+        setTotalCount(headerTotalCount)
+        setMaxPage(
+          headerTotalCount === 0 ? 1 : Math.ceil(headerTotalCount / perPage)
+        )
       })
       .catch((error: AxiosError) => {
         setIsError(true)

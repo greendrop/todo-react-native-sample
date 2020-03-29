@@ -27,21 +27,23 @@ const NewTaskBodyComponent: FC = () => {
   }, [isCreated])
 
   return (
-    <Content padder contentContainerStyle={{ flex: 1 }}>
-      <TaskFormComponent />
-      <Button
-        block
-        disabled={taskFormContainer.hasErrors()}
-        style={{ marginTop: 10 }}
-        onPress={async () => {
-          if (taskFormContainer.isValid()) {
-            await taskCreateContainer.createTask(taskFormContainer.taskForm)
-            setIsCreated(true)
-          }
-        }}
-      >
-        <Text>Create</Text>
-      </Button>
+    <Content padder>
+      <Content contentContainerStyle={{ flex: 1 }}>
+        <TaskFormComponent />
+        <Button
+          block
+          disabled={taskFormContainer.hasErrors()}
+          style={{ marginTop: 10 }}
+          onPress={async () => {
+            if (taskFormContainer.isValid()) {
+              await taskCreateContainer.createTask(taskFormContainer.taskForm)
+              setIsCreated(true)
+            }
+          }}
+        >
+          <Text>Create</Text>
+        </Button>
+      </Content>
     </Content>
   )
 }
