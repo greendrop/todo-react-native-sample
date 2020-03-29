@@ -34,61 +34,64 @@ const TaskDetailBodyComponent: FC = () => {
   }, [isDeleted])
 
   return (
-    <Content
-      padder
-      contentContainerStyle={{ flex: 1 }}
-      refreshControl={
-        <RefreshControl
-          refreshing={isRefreshing}
-          onRefresh={async () => {
-            setIsRefreshing(true)
-            await taskDetailContainer.fetchTaskById((route.params as Params).id)
-            setIsRefreshing(false)
-          }}
-        />
-      }
-    >
-      {!taskDetailContainer.isFetching && (
-        <>
-          <TaskDetailComponent task={taskDetailContainer.task} />
-
-          <Button
-            block
-            light
-            style={{ marginTop: 10 }}
-            onPress={async () => {
-              navigation.navigate('EditTask', {
-                id: taskDetailContainer.task.id
-              })
+    <Content contentContainerStyle={{ flex: 1 }}>
+      <Content
+        padder
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={async () => {
+              setIsRefreshing(true)
+              await taskDetailContainer.fetchTaskById(
+                (route.params as Params).id
+              )
+              setIsRefreshing(false)
             }}
-          >
-            <Text>Edit</Text>
-          </Button>
+          />
+        }
+      >
+        {!taskDetailContainer.isFetching && (
+          <>
+            <TaskDetailComponent task={taskDetailContainer.task} />
 
-          <Button
-            block
-            danger
-            style={{ marginTop: 10 }}
-            onPress={() => {
-              Alert.alert('Delete Task', 'Are you sure?', [
-                { text: 'Cancel', style: 'cancel' },
-                {
-                  text: 'OK',
-                  onPress: async () => {
-                    await taskDeleteContainer.deleteTask(
-                      taskDetailContainer.task.id
-                    )
-                    setIsDeleted(true)
+            <Button
+              block
+              light
+              style={{ marginTop: 10 }}
+              onPress={async () => {
+                navigation.navigate('EditTask', {
+                  id: taskDetailContainer.task.id
+                })
+              }}
+            >
+              <Text>Edit</Text>
+            </Button>
+
+            <Button
+              block
+              danger
+              style={{ marginTop: 10 }}
+              onPress={() => {
+                Alert.alert('Delete Task', 'Are you sure?', [
+                  { text: 'Cancel', style: 'cancel' },
+                  {
+                    text: 'OK',
+                    onPress: async () => {
+                      await taskDeleteContainer.deleteTask(
+                        taskDetailContainer.task.id
+                      )
+                      setIsDeleted(true)
+                    }
                   }
-                }
-              ])
-            }}
-          >
-            <Text>Delete</Text>
-          </Button>
-        </>
-      )}
-      {taskDetailContainer.isFetching && <Spinner />}
+                ])
+              }}
+            >
+              <Text>Delete</Text>
+            </Button>
+          </>
+        )}
+        {taskDetailContainer.isFetching && <Spinner />}
+      </Content>
     </Content>
   )
 }

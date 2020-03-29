@@ -42,29 +42,31 @@ const EditTaskBodyComponent: FC = () => {
   }, [isUpdated])
 
   return (
-    <Content padder contentContainerStyle={{ flex: 1 }}>
-      {!taskDetailContainer.isFetching && (
-        <>
-          <TaskFormComponent />
-          <Button
-            block
-            disabled={taskFormContainer.hasErrors()}
-            style={{ marginTop: 10 }}
-            onPress={async () => {
-              if (taskFormContainer.isValid()) {
-                await taskUpdateContainer.updateTask(
-                  taskDetailContainer.task.id,
-                  taskFormContainer.taskForm
-                )
-                setIsUpdated(true)
-              }
-            }}
-          >
-            <Text>Update</Text>
-          </Button>
-        </>
-      )}
-      {taskDetailContainer.isFetching && <Spinner />}
+    <Content contentContainerStyle={{ flex: 1 }}>
+      <Content padder>
+        {!taskDetailContainer.isFetching && (
+          <>
+            <TaskFormComponent />
+            <Button
+              block
+              disabled={taskFormContainer.hasErrors()}
+              style={{ marginTop: 10 }}
+              onPress={async () => {
+                if (taskFormContainer.isValid()) {
+                  await taskUpdateContainer.updateTask(
+                    taskDetailContainer.task.id,
+                    taskFormContainer.taskForm
+                  )
+                  setIsUpdated(true)
+                }
+              }}
+            >
+              <Text>Update</Text>
+            </Button>
+          </>
+        )}
+        {taskDetailContainer.isFetching && <Spinner />}
+      </Content>
     </Content>
   )
 }
