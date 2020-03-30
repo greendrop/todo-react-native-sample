@@ -16,8 +16,8 @@ jobs:
 
       # copy .env
       - run:
-        name: copy .env
-        command: cp .env.example .env
+          name: copy .env
+          command: cp .env.example .env
 
       # yarn install
       - restore_cache:
