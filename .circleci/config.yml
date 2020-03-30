@@ -1,0 +1,41 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12.13.0-stretch
+        environment:
+          TZ: Asia/Tokyo
+
+    working_directory: ~/todo-react-native-sample
+
+    parallelism: 1
+
+    steps:
+      - checkout
+
+      # copy .env
+      - run:
+        name: copy .env
+        command: cp .env.example .env
+
+      # yarn install
+      - restore_cache:
+          key: todo-react-native-sample-node-{{ checksum "yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+      - run:
+          name: yarn install
+          command: yarn install --ignore-engines
+      - save_cache:
+          key: todo-react-native-sample-node-{{ checksum "yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+          paths:
+            - ./node_modules
+
+      # run yarn run test:ci
+      - run:
+          name: yarn run test:ci
+          command: yarn run test:ci
+
+      # run yarn run lint
+      - run:
+          name: yarn run lint
+          command: yarn run lint
