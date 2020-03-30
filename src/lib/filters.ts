@@ -8,7 +8,7 @@ const datetime = (value: unknown, format?: string) => {
   return moment(value).format(format)
 }
 
-const truncate = (value: string, length: number, omission: string) => {
+const truncate = (value: string, length?: number, omission?: string) => {
   length = length || 20
   omission = omission ? omission.toString() : '...'
 
