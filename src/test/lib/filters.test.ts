@@ -1,5 +1,5 @@
 import assert from 'power-assert'
-import {datetime, truncate } from '../../lib/filters'
+import { datetime, truncate } from '../../lib/filters'
 
 describe('filters', () => {
   describe('datetime', () => {
