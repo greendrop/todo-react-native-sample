@@ -110,6 +110,7 @@ const useTaskForm = () => {
     errors,
     setErrors,
     clearTaskForm,
+    validateTitle,
     handleTitle,
     handleDescription,
     handleDone,
@@ -120,4 +121,5 @@ const useTaskForm = () => {
 
 const TaskFormContainer = createContainer(useTaskForm)
 
+export { useTaskForm }
 export default TaskFormContainer
