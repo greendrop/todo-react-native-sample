@@ -3,9 +3,9 @@ import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { Content, Button, Text, Toast } from 'native-base'
 import TaskCreateContainer from '../../containers/task-create-container'
 import TaskFormContainer from '../../containers/task-form-container'
-import TaskFormComponent from '../molecules/TaskFormComponent'
+import TaskForm from '../molecules/TaskForm'
 
-const NewTaskBodyComponent: FC = () => {
+const NewTaskBody: FC = () => {
   const [isCreated, setIsCreated] = useState<boolean>(false)
   const navigation = useNavigation()
   const isFocused = useIsFocused()
@@ -29,7 +29,7 @@ const NewTaskBodyComponent: FC = () => {
   return (
     <Content padder>
       <Content contentContainerStyle={{ flex: 1 }}>
-        <TaskFormComponent />
+        <TaskForm />
         <Button
           block
           disabled={taskFormContainer.hasErrors()}
@@ -48,4 +48,4 @@ const NewTaskBodyComponent: FC = () => {
   )
 }
 
-export default NewTaskBodyComponent
+export default NewTaskBody

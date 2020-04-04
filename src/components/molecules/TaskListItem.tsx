@@ -7,7 +7,7 @@ type Props = {
   task: ITask
 }
 
-const TaskListItemComponent: FC<Props> = props => {
+const TaskListItem: FC<Props> = props => {
   const navigation = useNavigation()
 
   return (
@@ -18,10 +18,10 @@ const TaskListItemComponent: FC<Props> = props => {
           navigation.navigate('TaskDetail', { id: props.task.id })
         }}
       >
-        <Text>{props.task.title}</Text>
+        <Text testID="title">{props.task.title}</Text>
       </CardItem>
     </Card>
   )
 }
 
-export default TaskListItemComponent
+export default TaskListItem

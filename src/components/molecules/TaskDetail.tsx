@@ -7,12 +7,12 @@ type Props = {
   task: ITask
 }
 
-const TaskDetailComponent: FC<Props> = props => {
+const TaskDetail: FC<Props> = props => {
   return (
-    <Form>
+    <Form testID="taskDetail">
       <Item stackedLabel>
         <Label>Title</Label>
-        <Input editable={false} value={props.task.title} />
+        <Input editable={false} value={props.task.title} testID="title" />
       </Item>
       <Item stackedLabel>
         <Label>Description</Label>
@@ -27,6 +27,7 @@ const TaskDetailComponent: FC<Props> = props => {
           editable={false}
           style={{ alignSelf: 'stretch', marginLeft: -10, marginTop: 10 }}
           value={props.task.description}
+          testID="description"
         />
       </Item>
       <Item stackedLabel>
@@ -35,18 +36,27 @@ const TaskDetailComponent: FC<Props> = props => {
           disabled
           style={{ alignSelf: 'flex-start', marginTop: 5, marginLeft: 5 }}
           value={props.task.done}
+          testID="done"
         />
       </Item>
       <Item stackedLabel>
         <Label>Created at</Label>
-        <Input editable={false} value={datetime(props.task.createdAt)} />
+        <Input
+          editable={false}
+          value={datetime(props.task.createdAt)}
+          testID="createdAt"
+        />
       </Item>
       <Item stackedLabel>
         <Label>Updated at</Label>
-        <Input editable={false} value={datetime(props.task.updatedAt)} />
+        <Input
+          editable={false}
+          value={datetime(props.task.updatedAt)}
+          testID="updatedAt"
+        />
       </Item>
     </Form>
   )
 }
 
-export default TaskDetailComponent
+export default TaskDetail

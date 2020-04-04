@@ -11,7 +11,7 @@ const menus = [{ name: 'Tasks', title: 'Tasks' }]
 
 type Props = DrawerContentComponentProps<DrawerContentOptions>
 
-const DrawerComponent: FC<Props> = props => {
+const DrawerContent: FC<Props> = props => {
   const authContainer = AuthContainer.useContainer()
 
   return (
@@ -38,6 +38,7 @@ const DrawerComponent: FC<Props> = props => {
               onPress={() =>
                 props.navigation.dispatch(DrawerActions.jumpTo('SignIn'))
               }
+              testID="signIn"
             >
               <Text>Sign in</Text>
             </ListItem>
@@ -50,6 +51,7 @@ const DrawerComponent: FC<Props> = props => {
                 authContainer.signOut()
                 props.navigation.dispatch(DrawerActions.jumpTo('SignIn'))
               }}
+              testID="signOut"
             >
               <Text>Sign out</Text>
             </ListItem>
@@ -60,4 +62,4 @@ const DrawerComponent: FC<Props> = props => {
   )
 }
 
-export default DrawerComponent
+export default DrawerContent

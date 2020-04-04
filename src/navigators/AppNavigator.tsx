@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import DrawerComponent from '../components/organisms/DrawerComponent'
+import DrawerContent from '../components/organisms/DrawerContent'
 import TaskstNavigator from './TasksNavigator'
 import SignInScreen from '../screens/SignInScreen'
 
@@ -10,7 +10,7 @@ const AppNavigator: FC = () => {
   return (
     <Drawer.Navigator
       backBehavior="none"
-      drawerContent={props => <DrawerComponent {...props} />}
+      drawerContent={props => <DrawerContent {...props} />}
     >
       <Drawer.Screen name="Tasks" component={TaskstNavigator} />
       <Drawer.Screen name="SignIn" component={SignInScreen} />

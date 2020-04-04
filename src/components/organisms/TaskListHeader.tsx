@@ -2,11 +2,11 @@ import React, { FC } from 'react'
 import { useNavigation, DrawerActions } from '@react-navigation/native'
 import { Header, Title, Left, Button, Icon, Body, Right } from 'native-base'
 
-const TaskListHeaderComponent: FC = () => {
+const TaskListHeader: FC = () => {
   const navigation = useNavigation()
 
   return (
-    <Header>
+    <Header testID="header">
       <Left>
         <Button
           transparent
@@ -25,4 +25,4 @@ const TaskListHeaderComponent: FC = () => {
   )
 }
 
-export default TaskListHeaderComponent
+export default TaskListHeader

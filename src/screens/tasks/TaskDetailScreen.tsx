@@ -8,8 +8,8 @@ import { Container } from 'native-base'
 import AuthContainer from '../../containers/auth-container'
 import TaskDetailContainer from '../../containers/task-detail-container'
 import TaskDeleteContainer from '../../containers/task-delete-container'
-import TaskDetailHeaderComponent from '../../components/organisms/TaskDetailHeaderComponent'
-import TaskDetailBodyComponent from '../../components/organisms/TaskDetailBodyComponent'
+import TaskDetailHeader from '../../components/organisms/TaskDetailHeader'
+import TaskDetailBody from '../../components/organisms/TaskDetailBody'
 
 const TaskDetailScreen: FC = () => {
   const navigation = useNavigation()
@@ -26,8 +26,8 @@ const TaskDetailScreen: FC = () => {
     <TaskDetailContainer.Provider>
       <TaskDeleteContainer.Provider>
         <Container>
-          <TaskDetailHeaderComponent />
-          <TaskDetailBodyComponent />
+          <TaskDetailHeader />
+          <TaskDetailBody />
         </Container>
       </TaskDeleteContainer.Provider>
     </TaskDetailContainer.Provider>

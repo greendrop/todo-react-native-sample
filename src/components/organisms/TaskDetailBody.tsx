@@ -4,13 +4,13 @@ import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import { Content, Spinner, Button, Text, Toast } from 'native-base'
 import TaskDetailContainer from '../../containers/task-detail-container'
 import TaskDeleteContainer from '../../containers/task-delete-container'
-import TaskDetailComponent from '../molecules/TaskDetailComponent'
+import TaskDetail from '../molecules/TaskDetail'
 
 type Params = {
   id: number
 }
 
-const TaskDetailBodyComponent: FC = () => {
+const TaskDetailBody: FC = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
   const [isDeleted, setIsDeleted] = useState<boolean>(false)
   const isFocused = useIsFocused()
@@ -52,7 +52,7 @@ const TaskDetailBodyComponent: FC = () => {
       >
         {!taskDetailContainer.isFetching && (
           <>
-            <TaskDetailComponent task={taskDetailContainer.task} />
+            <TaskDetail task={taskDetailContainer.task} />
 
             <Button
               block
@@ -90,10 +90,10 @@ const TaskDetailBodyComponent: FC = () => {
             </Button>
           </>
         )}
-        {taskDetailContainer.isFetching && <Spinner />}
+        {taskDetailContainer.isFetching && <Spinner testID="spinner" />}
       </Content>
     </Content>
   )
 }
 
-export default TaskDetailBodyComponent
+export default TaskDetailBody

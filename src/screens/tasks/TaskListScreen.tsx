@@ -7,8 +7,8 @@ import {
 import { Container } from 'native-base'
 import AuthContainer from '../../containers/auth-container'
 import TaskListContainer from '../../containers/task-list-container'
-import TaskListHeaderComponent from '../../components/organisms/TaskListHeaderComponent'
-import TaskListBodyComponent from '../../components/organisms/TaskListBodyComponent'
+import TaskListHeader from '../../components/organisms/TaskListHeader'
+import TaskListBody from '../../components/organisms/TaskListBody'
 
 const TaskListScreen: FC = () => {
   const navigation = useNavigation()
@@ -24,8 +24,8 @@ const TaskListScreen: FC = () => {
   return (
     <TaskListContainer.Provider>
       <Container>
-        <TaskListHeaderComponent />
-        <TaskListBodyComponent />
+        <TaskListHeader />
+        <TaskListBody />
       </Container>
     </TaskListContainer.Provider>
   )

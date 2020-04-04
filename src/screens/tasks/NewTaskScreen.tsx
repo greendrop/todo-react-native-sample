@@ -8,8 +8,8 @@ import { Container } from 'native-base'
 import AuthContainer from '../../containers/auth-container'
 import TaskCreateContainer from '../../containers/task-create-container'
 import TaskFormContainer from '../../containers/task-form-container'
-import NewTaskHeaderComponent from '../../components/organisms/NewTaskHeaderComponent'
-import NewTaskBodyComponent from '../../components/organisms/NewTaskBodyComponent'
+import NewTaskHeader from '../../components/organisms/NewTaskHeader'
+import NewTaskBody from '../../components/organisms/NewTaskBody'
 
 const NewTaskScreen: FC = () => {
   const navigation = useNavigation()
@@ -26,8 +26,8 @@ const NewTaskScreen: FC = () => {
     <TaskCreateContainer.Provider>
       <TaskFormContainer.Provider>
         <Container>
-          <NewTaskHeaderComponent />
-          <NewTaskBodyComponent />
+          <NewTaskHeader />
+          <NewTaskBody />
         </Container>
       </TaskFormContainer.Provider>
     </TaskCreateContainer.Provider>
