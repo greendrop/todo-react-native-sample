@@ -2,11 +2,11 @@ import React, { FC } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { Header, Title, Left, Button, Icon, Body, Right } from 'native-base'
 
-const NewTaskHeaderComponent: FC = () => {
+const NewTaskHeader: FC = () => {
   const navigation = useNavigation()
 
   return (
-    <Header>
+    <Header testID="header">
       <Left>
         <Button transparent onPress={() => navigation.goBack()}>
           <Icon type="FontAwesome5" name="arrow-left" />
@@ -20,4 +20,4 @@ const NewTaskHeaderComponent: FC = () => {
   )
 }
 
-export default NewTaskHeaderComponent
+export default NewTaskHeader

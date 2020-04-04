@@ -3,9 +3,9 @@ import { RefreshControl } from 'react-native'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { Content, Spinner, Fab, Icon, Text } from 'native-base'
 import TaskListContainer from '../../containers/task-list-container'
-import TaskListItemComponent from '../molecules/TaskListItemComponent'
+import TaskListItem from '../molecules/TaskListItem'
 
-const TaskListBodyComponent: FC = () => {
+const TaskListBody: FC = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
   const navigation = useNavigation()
   const isFocused = useIsFocused()
@@ -36,15 +36,16 @@ const TaskListBodyComponent: FC = () => {
             taskListContainer.fetchAdditionalTasks()
           }
         }}
+        testID="taskList"
       >
         {taskListContainer.tasks.map(task => {
-          return <TaskListItemComponent key={task.id} task={task} />
+          return <TaskListItem key={task.id} task={task} />
         })}
         {!taskListContainer.isFetching &&
           !taskListContainer.isLastFetched() && (
             <Text style={{ alignSelf: 'center', margin: 10 }}>Lead more</Text>
           )}
-        {taskListContainer.isFetching && <Spinner />}
+        {taskListContainer.isFetching && <Spinner testID="spinner" />}
       </Content>
       <Fab>
         <Icon
@@ -57,4 +58,4 @@ const TaskListBodyComponent: FC = () => {
   )
 }
 
-export default TaskListBodyComponent
+export default TaskListBody

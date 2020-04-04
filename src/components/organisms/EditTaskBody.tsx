@@ -4,14 +4,14 @@ import { Content, Button, Text, Toast, Spinner } from 'native-base'
 import TaskDetailContainer from '../../containers/task-detail-container'
 import TaskUpdateContainer from '../../containers/task-update-container'
 import TaskFormContainer from '../../containers/task-form-container'
-import TaskFormComponent from '../molecules/TaskFormComponent'
+import TaskForm from '../molecules/TaskForm'
 import { convertTaskToTaskForm } from '../../models/task'
 
 type Params = {
   id: number
 }
 
-const EditTaskBodyComponent: FC = () => {
+const EditTaskBody: FC = () => {
   const [isUpdated, setIsUpdated] = useState<boolean>(false)
   const navigation = useNavigation()
   const isFocused = useIsFocused()
@@ -46,7 +46,7 @@ const EditTaskBodyComponent: FC = () => {
       <Content padder>
         {!taskDetailContainer.isFetching && (
           <>
-            <TaskFormComponent />
+            <TaskForm />
             <Button
               block
               disabled={taskFormContainer.hasErrors()}
@@ -65,10 +65,10 @@ const EditTaskBodyComponent: FC = () => {
             </Button>
           </>
         )}
-        {taskDetailContainer.isFetching && <Spinner />}
+        {taskDetailContainer.isFetching && <Spinner testID="spinner" />}
       </Content>
     </Content>
   )
 }
 
-export default EditTaskBodyComponent
+export default EditTaskBody
